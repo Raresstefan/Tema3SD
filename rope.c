@@ -14,9 +14,6 @@ RopeNode* makeRopeNode(const char* str) {
     DIE(new_node == NULL, "new_node malloc failed");
     new_node->left = NULL;
     new_node->right = NULL;
-    // new_node->str = malloc((strlen(str)) * sizeof(char));
-    // DIE(new_node->str == NULL, "new_node->str malloc failed");
-    // strcpy(new_node->str, str);
     new_node->str = str;
     new_node->weight = strlen(str);
     return new_node;
@@ -69,15 +66,6 @@ void debugRopeNode(RopeNode* rn, int indent) {
     debugRopeNode(rn->right, indent+2);
 }
 
-
-
-// int getTotalWeight(RopeNode* rt) {
-//     if (!rt)
-//         return 0;
-
-//     return rt->weight + getTotalWeight(rt->right);
-// }
-
 int getNodeWeight(RopeNode *rt) {
     if(!rt)
     return 0;
@@ -86,23 +74,9 @@ int getNodeWeight(RopeNode *rt) {
     return getNodeWeight(rt->left) + getNodeWeight(rt->right);
 }
 
-// char *getStr(RopeNode *rt, char *str) {
-//     if(!rt)
-//     return NULL;
-//     if(rt->left == NULL && rt->right == NULL)
-//     strcat(str, rt->str);
-    
-// }
-
 
 RopeTree* concat(RopeTree* rt1, RopeTree* rt2) {
-    // TODO 1. Concat - 10p
-    // const char *new_str = malloc((strlen(rt1->root->str) + strlen(rt1->root->str)) * sizeof(char));
-    // strcpy(new_str, rt1->root->str);
-    // strcpy(new_str, rt2->root->str);
-    RopeNode *new_root = makeRopeNode(strdup(EMPTY));
-    // new_root->str = "\0";
-    
+    RopeNode *new_root = makeRopeNode(strdup(EMPTY));    
     new_root->weight = getNodeWeight(rt1->root);
     new_root->left = rt1->root;
     new_root->right = rt2->root;
