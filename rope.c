@@ -90,9 +90,33 @@ char indexRope(RopeTree* rt, int idx) {
     // TODO 2. Index - 10p
 }
 
+void form_str(RopeNode *rn, char *str) {
+    if(!rn)
+    return;
+        if(rn->left == NULL && rn->right == NULL) {
+            strcat(str, rn->str);
+            return;
+        }
+        form_str(rn->left, str);
+        form_str(rn->right, str);
+}
 
 char* search(RopeTree* rt, int start, int end) {
     // TODO 3. Search - 20p
+    if(!rt)
+    return NULL;
+    int length = getNodeWeight(rt->root->left) + getNodeWeight(rt->root->right);
+    char *str = calloc(length + 1, sizeof(char));
+    int nr = 0;
+    int the_length = end - start;
+    char *new_str = calloc((the_length + 1), sizeof(char));
+    form_str(rt->root, str);
+    unsigned int i;
+    for(i = start; i < end; i++) {
+        strncat(new_str, &(str[i]), 1);
+    }
+    free(str);
+    return new_str;
 }
 
 SplitPair split(RopeTree* rt, int idx) {
