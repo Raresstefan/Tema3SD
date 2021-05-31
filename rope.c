@@ -100,15 +100,7 @@ static char __indexRope(RopeNode *rn, int *idx)
  	}
  }
 
-char indexRope(RopeTree* rt, int idx) {
-     // TODO 2. Index - 10p
-     if (rt)
-     	__indexRope(rt->root, &idx);
-     else
-     	return 'x';
- }
-
-void form_str(RopeNode *rn, char *str) {
+ void form_str(RopeNode *rn, char *str) {
     if(!rn)
     return;
         if(rn->left == NULL && rn->right == NULL) {
@@ -118,6 +110,24 @@ void form_str(RopeNode *rn, char *str) {
         form_str(rn->left, str);
         form_str(rn->right, str);
 }
+
+char indexRope(RopeTree* rt, int idx) {
+     // TODO 2. Index - 10p
+    //  if (rt)
+    //  	__indexRope(rt->root, &idx);
+    //  else
+    //  	return 'x';
+    if(!rt)
+    return 'x';
+    int length = getNodeWeight(rt->root->left) + getNodeWeight(rt->root->right);
+    char *str = calloc(length + 1, sizeof(char));
+    form_str(rt->root, str);
+    char c = str[idx];
+    free(str);
+    return c;
+ }
+
+
 
 char* search(RopeTree* rt, int start, int end) {
     // TODO 3. Search - 20p
