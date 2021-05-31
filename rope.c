@@ -84,10 +84,27 @@ RopeTree* concat(RopeTree* rt1, RopeTree* rt2) {
     return new_tree;
 }
 
+static char __indexRope(RopeNode *rn, int *idx)
+{
+	if (rn->left) {
+		__indexRope(rn->left, idx);
+	} else if (rn->right) {
+		__indexRope(rn->right, idx);
+	} else {
+		int lenght = strlen(rn->str);
 
+		if (*idx < lenght)
+			return (rn->str)[*idx];
+		else
+			*idx = *idx - lenght;
+	}
+}
 
 char indexRope(RopeTree* rt, int idx) {
-    // TODO 2. Index - 10p
+    if (rt)
+    	__indexRope(rt->root, &idx);
+    else
+    	return 'x';
 }
 
 
@@ -108,3 +125,5 @@ RopeTree* delete(RopeTree* rt, int start, int len) {
 }
 
 // FINAL 10p -> complex test involving all operations
+
+
