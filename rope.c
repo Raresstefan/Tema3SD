@@ -6,7 +6,7 @@
 #include "utils.h"
 
 #define EMPTY ""
-
+char* strdup(const char*);
 
 RopeNode* makeRopeNode(const char* str) {
     // TODO
@@ -111,6 +111,17 @@ static char __indexRope(RopeNode *rn, int *idx)
         form_str(rn->right, str);
 }
 
+int isCharInStr(char *str, char c)
+{
+    unsigned int i;
+    for(i = 0; i < strlen(str); i++) {
+        if(str[i] == c) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 char indexRope(RopeTree* rt, int idx) {
      // TODO 2. Index - 10p
     //  if (rt)
@@ -139,7 +150,7 @@ char* search(RopeTree* rt, int start, int end) {
     int the_length = end - start;
     char *new_str = calloc((the_length + 1), sizeof(char));
     form_str(rt->root, str);
-    unsigned int i;
+    int i;
     for(i = start; i < end; i++) {
         strncat(new_str, &(str[i]), 1);
     }
@@ -147,16 +158,59 @@ char* search(RopeTree* rt, int start, int end) {
     return new_str;
 }
 
+RopeNode* copyRopeNode(RopeNode* rn) {
+    if (!rn)
+        return NULL;
+
+    RopeNode* new_rn = makeRopeNode(strdup(rn->str));
+    new_rn->left = copyRopeNode(rn->left);
+    new_rn->right = copyRopeNode(rn->right);
+    return new_rn;
+}
+
+int whichSideIsChar(char c, RopeNode* rn)
+{
+    if(!rn)
+    return 0;
+    if(rn->left == NULL && rn->right == NULL) {
+        if(isCharInStr(rn->str, c) == 1) 
+        return 1;
+    }
+    
+    return whichSideIsChar(c, rn->left);
+    return whichSideIsChar(c, rn->right);
+}
+
+RopeTree* copyRopeTree(RopeTree* rt) {
+    if (!rt)
+        return NULL;
+
+    RopeTree* new_rt = makeRopeTree(copyRopeNode(rt->root));
+    return new_rt;
+}
+
+
 SplitPair split(RopeTree* rt, int idx) {
     // TODO 4. Split - 20p
+    char the_char = indexRope(rt, idx);
+    if(whichSideIsChar(the_char, rt->root->left) == 1) {
+        RopeTree *first_rt = makeRopeTree(copyRopeNode(rt->root->right));
+    }
+    else {
+        RopeTree *first_rt = makeRopeTree(copyRopeNode(rt->root->left));
+    }
+
 }
 
 RopeTree* insert(RopeTree* rt, int idx, const char* str) {
     // TODO 5. Insert - 5p
+
 }
 
 RopeTree* delete(RopeTree* rt, int start, int len) {
     // TODO 6. Delete - 5p
+    //split(start)
+
 }
 
 // FINAL 10p -> complex test involving all operations
