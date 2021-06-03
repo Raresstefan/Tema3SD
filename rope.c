@@ -147,8 +147,9 @@ static char __indexRope(RopeNode *rn, int *idx)
 
 char indexRope(RopeTree* rt, int idx) {
      // TODO 2. Index - 10p
+    int copy = idx;
     if (rt)
-    	return __indexRope(rt->root, &idx);
+    	return __indexRope(rt->root, &copy);
      	
     return 'x';
     // if(!rt)
@@ -162,20 +163,20 @@ char indexRope(RopeTree* rt, int idx) {
  }
 
 char* search(RopeTree* rt, int start, int end) {
-    // TODO 3. Search - 20p
     if(!rt)
-    return NULL;
-    int length = getNodeWeight(rt->root->left) + getNodeWeight(rt->root->right);
-    char *str = calloc(length + 1, sizeof(char));
-    int nr = 0;
-    int the_length = end - start;
-    char *new_str = calloc((the_length + 1), sizeof(char));
-    form_str(rt->root, str);
-    unsigned int i;
+        return NULL;
+
+    int length = end - start;
+    char *new_str = malloc(length + 1);
+    
+    int i;
+    int j = 0;
     for(i = start; i < end; i++) {
-        strncat(new_str, &(str[i]), 1);
+        new_str[j++] = indexRope(rt, i);
     }
-    free(str);
+    
+    new_str[j] = '\0';
+
     return new_str;
 }
 
@@ -285,7 +286,8 @@ SplitPair split(RopeTree* rt, int idx) {
 
     if (idx >= getNodeWeight(new_root)) {
     	pair.left = new_root;
-    	pair.right = NULL;
+    	pair.right = makeRopeNode(strdup(EMPTY));
+
     	return pair;
     }
 
@@ -302,8 +304,8 @@ SplitPair split(RopeTree* rt, int idx) {
     pair.right = second_split(new_root, &copy_idx, key);
     pair.left = new_root;
     //pair.right = new_root;
-    if(pair.left == NULL || pair.right == NULL)
-    printf("\n");
+        
+    
     return pair;
 }
 
@@ -331,3 +333,4 @@ RopeTree* delete(RopeTree* rt, int start, int len) {
 }
 
 // FINAL 10p -> complex test involving all operations
+
